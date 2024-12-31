@@ -32,12 +32,12 @@ export class AppService implements OnApplicationBootstrap {
       });
 
       // 注册账户
-      await client.createAccount({
+      const account = await client.createAccount({
         termsOfServiceAgreed: true,
         contact: [`mailto:${EMAIL}`],
       });
 
-      console.log('账户注册成功');
+      console.log('账户注册成功', account);
 
       // 创建 CSR（证书签名请求）
       const [key, csr] = await acme.crypto.createCsr({
