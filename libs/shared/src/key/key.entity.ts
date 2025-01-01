@@ -1,6 +1,7 @@
 // 外部依赖
 import { Entity, PrimaryGeneratedColumn, Index, Column } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+
 // 内部依赖
 import { CommonEntity, CommonLogEntity } from '..';
 

@@ -2,9 +2,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsSelect, MoreThan } from 'typeorm';
+
 // 内部依赖
 import { KeyDto, KeyEntity, KeyLogEntity, CommonService } from '..';
 
+/**密钥管理服务 */
 @Injectable()
 export class KeyService extends CommonService<
   number,
@@ -28,8 +30,8 @@ export class KeyService extends CommonService<
   }
 
   /**
-   * 获取需同步数据
-   * @returns 增量数据
+   * 获取同步数据
+   * @returns 待同步的对象数据
    */
   protected async commons(): Promise<KeyEntity[]> {
     return await this.keyRepository.find({

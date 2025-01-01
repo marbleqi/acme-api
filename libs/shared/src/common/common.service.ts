@@ -84,7 +84,7 @@ export class CommonService<
     /**待同步的对象数据 */
     const commons = await this.commons();
     for (const common of commons) {
-      this.cache.set(common[this.pk as keyof typeof common], common);
+      this.cache.set(common[this.pk], common);
       if (this.operateId < common.update.operateId) {
         this.operateId = common.update.operateId;
       }
@@ -111,12 +111,16 @@ export class CommonService<
   /**
    * 获取对象详情
    * @param pk 对象主键值
+   * @param allowNull 允许返回null，默认false
    * @returns 对象详情
    */
-  async show(pk: pkType): Promise<Entity> {
+  async show(pk: pkType, allowNull: boolean = false): Promise<Entity> {
     const result = await this.commonRepository.findOneBy({
       [this.pk]: pk,
     } as unknown as FindOptionsWhere<Entity>);
+    if (allowNull) {
+      return result;
+    }
     if (result) {
       return result;
     }
@@ -162,8 +166,10 @@ export class CommonService<
     const update = await this.getUpdate(this.name, 'create', userId, reqId);
     /**创建信息 */
     const create = { userId: update.userId, at: update.at } as CreateEntity;
+    /**对象信息 */
     let value: Entity;
     if (pk) {
+      // 如果指定了主键值，则使用该值
       value = {
         [this.pk]: pk,
         config,
@@ -250,7 +256,7 @@ export class CommonService<
       [this.pk]: pk,
     } as unknown as FindOptionsWhere<Entity>);
     if (result) {
-      // 当前对象存在
+      // 当前对象存在，执行更新逻辑
       /**更新信息 */
       const update = await this.getUpdate(this.name, 'update', userId, reqId);
       try {
@@ -274,7 +280,7 @@ export class CommonService<
         );
       }
     } else {
-      // 当前对象不存在
+      // 当前对象不存在，执行创建逻辑
       /**更新信息 */
       const update = await this.getUpdate(this.name, 'create', userId, reqId);
       /**创建信息 */
@@ -360,7 +366,7 @@ export class CommonService<
     await this.commonRepository.delete(pks);
   }
 
-  /**清空表 */
+  /**清空表（包括对象表和日志表） */
   async clear() {
     await this.commonRepository.clear();
     await this.commonLogRepository.clear();

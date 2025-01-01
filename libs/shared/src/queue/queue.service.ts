@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectQueue, Processor, OnGlobalQueueWaiting } from '@nestjs/bull';
 import { Queue, Job, JobOptions } from 'bull';
 import { Subject } from 'rxjs';
+
 // 内部依赖
 import { Message, Condition } from '..';
 
@@ -28,6 +29,7 @@ export class QueueService {
    * 创建任务
    * @param name 任务名称
    * @param data 任务数据
+   * @param opts 任务配置
    */
   async add(name: string, data: any, opts?: JobOptions): Promise<void> {
     if (opts) {
@@ -94,6 +96,7 @@ export class QueueService {
     const job = await this.queue.getJob(id);
     /**任务消息 */
     const message = { name: job.name, data: job.data } as Message;
+    // TODO：需要将前端通知类型调整为可配置
     if (['auth/menu', 'auth/category', 'sort'].includes(message.name)) {
       // 菜单或排序类变更直接通知所有前端
       this.webSub.next(message);

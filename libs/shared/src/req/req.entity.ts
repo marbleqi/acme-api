@@ -1,5 +1,11 @@
 // 外部依赖
-import { Entity, Column, PrimaryGeneratedColumn, AfterLoad } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Index,
+  AfterLoad,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 /**请求日志表 */
@@ -13,6 +19,7 @@ export class ReqEntity {
   /**请求用户ID */
   @ApiProperty({ description: '请求用户ID', example: 1 })
   @Column({ type: 'int', name: 'user_id', default: 0, comment: '请求用户ID' })
+  @Index()
   userId: number;
 
   /**模块 */
@@ -68,6 +75,7 @@ export class ReqEntity {
     default: 0,
     comment: '请求到达时间',
   })
+  @Index()
   startAt: number;
 
   /**响应完成时间 */
@@ -78,6 +86,7 @@ export class ReqEntity {
     default: 0,
     comment: '响应完成时间',
   })
+  @Index()
   endAt: number;
 
   /**对长整型数据进行数据转换 */

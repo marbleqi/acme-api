@@ -2,6 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 // 内部依赖
 import { SortEntity, SortLogEntity, CommonService } from '..';
 
@@ -25,6 +26,6 @@ export class SortService extends CommonService<
     @InjectRepository(SortLogEntity)
     private readonly sortLogRepository: Repository<SortLogEntity>,
   ) {
-    super('code', 'sort', '排序值', sortRepository, sortLogRepository);
+    super('entity', 'sort', '排序值', sortRepository, sortLogRepository);
   }
 }

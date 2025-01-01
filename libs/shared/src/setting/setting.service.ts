@@ -2,6 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 // 内部依赖
 import {
   SettingEntity,
@@ -31,21 +32,11 @@ export class SettingService extends CommonService<
     private readonly settingLogRepository: Repository<SettingLogEntity>,
     private readonly queueSrv: QueueService,
   ) {
-    super('code', 'setting', '配置项', settingRepository, settingLogRepository);
+    super('key', 'setting', '配置项', settingRepository, settingLogRepository);
   }
 
   /**启动后初始化 */
   async onApplicationBootstrap(): Promise<void> {
-    // 订阅后端消息
-    this.queueSrv.apiSub.subscribe(async (res) => {
-      console.debug('收到消息', res);
-      if (res.name === 'setting') {
-        console.debug('缓存同步开始');
-        await this.sync();
-        console.debug('缓存同步结束，通知前端更新');
-        this.queueSrv.webSub.next(res);
-      }
-    });
     // 缓存同步
     await this.sync();
     // 如果未配置系统参数，则配置系统参数
@@ -64,7 +55,17 @@ export class SettingService extends CommonService<
         dingtalk: false,
       };
       // 保存系统配置
-      await this.update('system', config);
+      await this.create(config, 1, 0, 'system');
     }
+    // 订阅后端消息
+    this.queueSrv.apiSub.subscribe(async (res) => {
+      console.debug('收到消息', res);
+      if (res.name === 'setting') {
+        console.debug('缓存同步开始');
+        await this.sync();
+        console.debug('缓存同步结束，通知前端更新');
+        this.queueSrv.webSub.next(res);
+      }
+    });
   }
 }
