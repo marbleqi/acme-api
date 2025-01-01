@@ -183,7 +183,6 @@ export class CommonService<
     try {
       /**操作结果 */
       const result = await this.commonRepository.insert(value);
-      console.debug('创建结果', result);
       if (result.identifiers.length) {
         this.logSub.next(Number(update.operateId));
         return result.identifiers[0][this.pk];

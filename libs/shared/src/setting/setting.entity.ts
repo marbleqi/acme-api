@@ -14,7 +14,7 @@ export class SettingEntity extends CommonEntity {
   key: string;
 
   /**配置值 */
-  @ApiProperty({ description: '值', example: { app: '运维平台' } })
+  @ApiProperty({ description: '值', example: { app: '证书管理平台' } })
   @Column({ type: 'json', name: 'config', comment: '值' })
   config: any;
 }
@@ -29,7 +29,7 @@ export class SettingLogEntity extends CommonLogEntity {
   key: string;
 
   /**配置值 */
-  @ApiProperty({ description: '值', example: { app: '运维平台' } })
+  @ApiProperty({ description: '值', example: { app: '证书管理平台' } })
   @Column({ type: 'json', name: 'config', comment: '值' })
   config: any;
 }

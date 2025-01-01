@@ -7,6 +7,7 @@ import {
   AfterLoad,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+
 // 内部依赖
 import { CommonEntity, CommonLogEntity } from '@shared';
 
@@ -73,7 +74,6 @@ export class UserEntity extends CommonEntity {
   /**用户配置 */
   @ApiProperty({ description: '用户配置' })
   @Column(() => UserConfigEntity, { prefix: false })
-  @Index(['loginName'], { unique: true })
   config: UserConfigEntity;
 
   /**密码错误次数 */
