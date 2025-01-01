@@ -118,10 +118,7 @@ export class CommonService<
     const result = await this.commonRepository.findOneBy({
       [this.pk]: pk,
     } as unknown as FindOptionsWhere<Entity>);
-    if (allowNull) {
-      return result;
-    }
-    if (result) {
+    if (allowNull || result) {
       return result;
     }
     throw new NotFoundException(`${this.pk}为${pk}的${this.description}不存在`);

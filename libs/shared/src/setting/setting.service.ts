@@ -43,8 +43,8 @@ export class SettingService extends CommonService<
     if (!this.cache.has('system')) {
       /**系统配置 */
       const config = {
-        name: '运维平台',
-        title: '运维平台',
+        name: '管理平台',
+        title: '管理平台',
         description: '平台在手，天下我有。',
         company: '***公司',
         domain: '***.com',
