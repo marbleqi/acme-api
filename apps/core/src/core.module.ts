@@ -5,6 +5,9 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 // 内部依赖
 import { SharedModule, ReqInterceptor } from '@shared';
 import { AuthModule } from '@auth';
+import { AccountModule } from './account';
+import { AdminModule } from './admin';
+import { AcmeModule } from './acme';
 
 @Module({
   imports: [
@@ -46,6 +49,9 @@ import { AuthModule } from '@auth';
     }),
     SharedModule,
     AuthModule,
+    AccountModule,
+    AdminModule,
+    AcmeModule,
   ],
   providers: [
     { provide: APP_PIPE, useClass: ValidationPipe },

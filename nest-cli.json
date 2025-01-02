@@ -9,7 +9,46 @@
   },
   "monorepo": true,
   "root": "apps/core",
+  "generateOptions": {
+    "spec": false
+  },
   "projects": {
+    "shared": {
+      "type": "library",
+      "root": "libs/shared",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
+    },
+    "auth": {
+      "type": "library",
+      "root": "libs/auth",
+      "entryFile": "index",
+      "sourceRoot": "libs/auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/auth/tsconfig.lib.json"
+      }
+    },
+    "aliyun": {
+      "type": "library",
+      "root": "libs/aliyun",
+      "entryFile": "index",
+      "sourceRoot": "libs/aliyun/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/aliyun/tsconfig.lib.json"
+      }
+    },
+    "aws": {
+      "type": "library",
+      "root": "libs/aws",
+      "entryFile": "index",
+      "sourceRoot": "libs/aws/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/aws/tsconfig.lib.json"
+      }
+    },
     "core": {
       "type": "application",
       "root": "apps/core",

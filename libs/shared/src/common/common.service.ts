@@ -102,6 +102,7 @@ export class CommonService<
    * @returns 对象清单
    */
   async index(operateId: number = -1): Promise<Entity[]> {
+    // 更新缓存
     await this.sync();
     return Array.from(this.cache.values()).filter(
       (common) => common.update.operateId > operateId,
@@ -151,7 +152,7 @@ export class CommonService<
    * @param userId 创建用户ID
    * @param reqId 请求日志ID
    * @param pk 对象主键值（可选）
-   * @returns 新对象主键ID，如果创建失败则返回0抛出异常
+   * @returns 新对象主键ID，如果创建失败则返回0或抛出异常
    */
   async create(
     config: CreateDto,
@@ -185,6 +186,8 @@ export class CommonService<
       const result = await this.commonRepository.insert(value);
       if (result.identifiers.length) {
         this.logSub.next(Number(update.operateId));
+        // 更新缓存
+        await this.sync();
         return result.identifiers[0][this.pk];
       } else {
         return 0;
@@ -219,6 +222,8 @@ export class CommonService<
       } as unknown as Entity);
       if (result.affected) {
         this.logSub.next(Number(update.operateId));
+        // 更新缓存
+        await this.sync();
       }
       return result.affected;
     } catch (e) {
@@ -246,7 +251,7 @@ export class CommonService<
     config: UpdateDto,
     userId: number = 1,
     reqId: number = 0,
-  ): Promise<number | string> {
+  ): Promise<number> {
     /**当前对象 */
     const result = await this.commonRepository.findOneBy({
       [this.pk]: pk,
@@ -263,6 +268,8 @@ export class CommonService<
         } as unknown as Entity);
         if (result.affected) {
           this.logSub.next(Number(update.operateId));
+          // 更新缓存
+          await this.sync();
         }
         return result.affected;
       } catch (e) {
@@ -292,10 +299,10 @@ export class CommonService<
         console.debug('创建结果', result);
         if (result.identifiers.length) {
           this.logSub.next(Number(update.operateId));
-          return result.identifiers[0][this.pk];
-        } else {
-          return 0;
+          // 更新缓存
+          await this.sync();
         }
+        return result.identifiers.length;
       } catch (e) {
         console.error(
           `${this.pk}为${pk}的${this.description}创建失败`,
@@ -333,6 +340,8 @@ export class CommonService<
       } as unknown as Entity);
       if (result.affected) {
         this.logSub.next(Number(update.operateId));
+        // 更新缓存
+        await this.sync();
       }
       return result.affected;
     } catch (e) {
@@ -352,12 +361,15 @@ export class CommonService<
   ) {
     /**更新信息 */
     const update = await this.getUpdate(this.name, 'delete', userId, reqId);
-    // 先标记待删除的记录
+    // 先标记待删除的记录状态为false
     await this.commonRepository.update(pks, {
+      config: { status: false },
       update,
     } as unknown as Entity);
     // 将待删除的记录添加到日志表中
     await this.addLog(update.operateId);
+    // 更新缓存
+    await this.sync();
     // 将待删除的记录进行删除
     await this.commonRepository.delete(pks);
   }

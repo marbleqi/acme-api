@@ -28,7 +28,6 @@ export class TokenController
 {
   /**
    * 构造函数
-   * @param abilitySrv 权限点服务
    * @param tokenSrv 令牌服务
    */
   constructor(private readonly tokenSrv: TokenService) {

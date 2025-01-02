@@ -57,7 +57,6 @@ export class CommonController<
    * @param controllerName 控制器名称
    * @param moduleAbility 模块权限点
    * @param ControllerAbility 控制器权限点
-   * @param action 方法权限点配置
    */
   constructor(
     private readonly commonSrv: CommonService<
@@ -181,7 +180,8 @@ export class CommonController<
   @ApiOperation({ summary: '重置对象缓存' })
   @Abilities(4)
   private async reset(@Res() res: Response): Promise<void> {
-    res.locals.result = await this.commonSrv.reset();
+    await this.commonSrv.reset();
+    res.locals.result = 'ok';
   }
 
   /**
@@ -218,6 +218,25 @@ export class CommonController<
     const userId = Number(res.locals.userId);
     const reqId = Number(res.locals.reqId);
     res.locals.result = await this.commonSrv.update(pk, config, userId, reqId);
+  }
+
+  /**
+   * 覆盖对象（有则更新，无则创建）
+   * @param pk 对象主键值
+   * @param config 待更新信息
+   * @param res 响应上下文
+   */
+  @Post('upsert/:pk')
+  @ApiOperation({ summary: '覆盖对象（有则更新，无则创建）' })
+  @Abilities(6)
+  private async upsert(
+    @Param('pk') pk: pkType,
+    @Body() config: UpdateDto,
+    @Res() res: Response,
+  ): Promise<void> {
+    const userId = Number(res.locals.userId);
+    const reqId = Number(res.locals.reqId);
+    res.locals.result = await this.commonSrv.upsert(pk, config, userId, reqId);
   }
 
   /**

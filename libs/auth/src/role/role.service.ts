@@ -16,6 +16,9 @@ export class RoleService extends CommonService<
   RoleEntity,
   RoleLogEntity
 > {
+  /**角色缓存Map */
+  public cache: Map<number, RoleEntity>;
+
   /**
    * 构造函数
    * @param roleRepository 角色存储器
@@ -28,6 +31,7 @@ export class RoleService extends CommonService<
     private readonly roleLogRepository: Repository<RoleLogEntity>,
   ) {
     super('id', 'role', '角色', roleRepository, roleLogRepository);
+    this.cache = new Map<number, RoleEntity>();
   }
 
   /**启动后初始化 */

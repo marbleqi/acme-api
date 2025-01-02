@@ -33,7 +33,7 @@ async function bootstrap() {
     );
   }
   // 开启服务监听
-  await app.listen(parseInt(process.env.PORT, 10) || 80);
+  await app.listen(parseInt(process.env.CORE_PORT, 10) || 80);
   // console.debug('core服务已启动A', process.env);
 }
 bootstrap();

@@ -18,18 +18,14 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@shared": [
-        "libs/shared/src"
-      ],
-      "@shared/*": [
-        "libs/shared/src/*"
-      ],
-      "@auth": [
-        "libs/auth/src"
-      ],
-      "@auth/*": [
-        "libs/auth/src/*"
-      ]
+      "@shared": ["libs/shared/src"],
+      "@shared/*": ["libs/shared/src/*"],
+      "@auth": ["libs/auth/src"],
+      "@auth/*": ["libs/auth/src/*"],
+      "@aliyun": ["libs/aliyun/src"],
+      "@aliyun/*": ["libs/aliyun/src/*"],
+      "@aws": ["libs/aws/src"],
+      "@aws/*": ["libs/aws/src/*"]
     }
   }
 }

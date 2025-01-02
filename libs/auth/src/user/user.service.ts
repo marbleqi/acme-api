@@ -24,11 +24,13 @@ export class UserService extends CommonService<
   UserEntity,
   UserLogEntity
 > {
+  /**用户缓存Map */
+  public cache: Map<number, UserEntity>;
+
   /**
    * 构造函数
    * @param userRepository 用户存储器
    * @param userLogRepository 用户日志存储器
-   * @param operateSrv 操作序号服务
    * @param roleSrv 角色服务
    */
   constructor(
@@ -39,6 +41,7 @@ export class UserService extends CommonService<
     private readonly roleSrv: RoleService,
   ) {
     super('id', 'user', '用户', userRepository, userLogRepository);
+    this.cache = new Map<number, UserEntity>();
   }
 
   /**
@@ -145,7 +148,7 @@ export class UserService extends CommonService<
     });
     // 如果用户存在
     if (user) {
-      throw new ForbiddenException('登陆名已被已有用户使用');
+      throw new ConflictException('登陆名已被已有用户使用');
     }
     return await super.create(config, userId, reqId);
   }
@@ -176,36 +179,35 @@ export class UserService extends CommonService<
     return await super.update(id, config, userId, reqId);
   }
 
-  // /**
-  //  * 获取用户权限点
-  //  * @param id 用户ID
-  //  * @returns 权限点数组
-  //  */
-  // // async ability(id: number): Promise<number[]> {
-  // //   return [];
-  // //   const roles = await this.roleSrv.index();
-  // //   return roles
-  // //     .filter((role) => this.get(id).roles.includes(role.id))
-  // //     .reduce((prev, role) => prev.concat(role.abilities), []);
-  // // }
+  /**
+   * 获取用户权限点
+   * @param id 用户ID
+   * @returns 权限点数组
+   */
+  ability(id: number): number[] {
+    return Array.from(this.roleSrv.cache.values())
+      .filter((role) => this.cache.get(id).config.roles.includes(role.id))
+      .reduce((prev, role) => prev.concat(role.config.abilities), []);
+  }
 
-  // /**
-  //  * 验证用户与权限点关系是否无效（注：无效返回true）
-  //  * @param id 用户ID
-  //  * @param abilities 权限点数组
-  //  * @returns 验证结果
-  //  */
-  // // invalid(id: number, abilities: number[]): boolean {
-  // //   return (
-  // //     abilities.length &&
-  // //     this.roleSrv
-  // //       .list()
-  // //       .filter((role) => this.get(id).roles.includes(role.id))
-  // //       .every((role) =>
-  // //         role.abilities.every((ability) => !abilities.includes(ability)),
-  // //       )
-  // //   );
-  // // }
+  /**
+   * 验证用户与权限点关系是否无效（注：无效返回true）
+   * @param id 用户ID
+   * @param abilities 权限点数组
+   * @returns 验证结果
+   */
+  invalid(id: number, abilities: number[]): boolean {
+    return (
+      abilities.length &&
+      Array.from(this.roleSrv.cache.values())
+        .filter((role) => this.cache.get(id).config.roles.includes(role.id))
+        .every((role) =>
+          role.config.abilities.every(
+            (ability) => !abilities.includes(ability),
+          ),
+        )
+    );
+  }
 
   /**
    * 用户登陆

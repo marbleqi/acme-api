@@ -49,7 +49,7 @@ export class SettingService extends CommonService<
         dingtalk: false,
       };
       // 保存系统配置
-      await this.create(config, 1, 0, 'system');
+      await this.upsert('system', config, 1, 0);
     }
   }
 }

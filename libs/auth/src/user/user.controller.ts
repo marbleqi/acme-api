@@ -38,7 +38,6 @@ export class UserController extends CommonController<
 > {
   /**
    * 构造函数
-   * @param abilitySrv 权限点服务
    * @param userSrv 用户服务
    */
   constructor(private readonly userSrv: UserService) {

@@ -19,15 +19,13 @@ export class DashboardService {
    * @param entityManager 实体管理器
    * @param commonService 通用服务
    */
-  constructor(
-    private readonly redisService: RedisService,
-    private readonly abilitySrv: AbilityService,
-  ) {}
-
-  ability() {
-    return this.abilitySrv.size;
-  }
-
+  // constructor(
+  //   private readonly redisService: RedisService,
+  //   private readonly abilitySrv: AbilityService,
+  // ) {}
+  // ability() {
+  //   return this.abilitySrv.size;
+  // }
   // async menu() {
   //   /**返回的模块记录 */
   //   const result = await this.entityManager
@@ -40,7 +38,6 @@ export class DashboardService {
   //     ? ({ code: 0, msg: 'ok', data: result.count })
   //     : ({ code: 404, msg: '未获取到菜单数据' });
   // }
-
   // async category() {
   //   /**返回的模块记录 */
   //   const result = await this.entityManager
@@ -53,7 +50,6 @@ export class DashboardService {
   //     ? ({ code: 0, msg: 'ok', data: result.count })
   //     : ({ code: 404, msg: '未获取到菜单类别数据' });
   // }
-
   // async role() {
   //   /**返回的模块记录 */
   //   const result = await this.entityManager
@@ -66,7 +62,6 @@ export class DashboardService {
   //     ? ({ code: 0, msg: 'ok', data: result.count })
   //     : ({ code: 404, msg: '未获取到角色数据' });
   // }
-
   // async user() {
   //   /**返回的模块记录 */
   //   const result = await this.entityManager
@@ -79,7 +74,6 @@ export class DashboardService {
   //     ? ({ code: 0, msg: 'ok', data: result.count })
   //     : ({ code: 404, msg: '未获取到用户数据' });
   // }
-
   // async group() {
   //   /**返回的模块记录 */
   //   const result = await this.entityManager
@@ -92,7 +86,6 @@ export class DashboardService {
   //     ? ({ code: 0, msg: 'ok', data: result.count })
   //     : ({ code: 404, msg: '未获取到用户组数据' });
   // }
-
   // async token() {
   //   /**令牌清单 */
   //   const tokens = await this.redisService.keys('token:*');
