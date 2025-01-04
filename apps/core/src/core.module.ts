@@ -1,13 +1,15 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_GUARD, APP_PIPE, APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
+
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 // 内部依赖
 import { SharedModule, ReqInterceptor } from '@shared';
-import { AuthModule } from '@auth';
-import { AccountModule } from './account';
+import { TokenGuard, AuthModule } from '@auth';
 import { AdminModule } from './admin';
 import { AcmeModule } from './acme';
+import { AccountModule } from './account';
+import { PassportModule } from './passport';
 
 @Module({
   imports: [
@@ -49,11 +51,13 @@ import { AcmeModule } from './acme';
     }),
     SharedModule,
     AuthModule,
-    AccountModule,
     AdminModule,
     AcmeModule,
+    AccountModule,
+    PassportModule,
   ],
   providers: [
+    { provide: APP_GUARD, useClass: TokenGuard },
     { provide: APP_PIPE, useClass: ValidationPipe },
     { provide: APP_INTERCEPTOR, useClass: ReqInterceptor },
   ],

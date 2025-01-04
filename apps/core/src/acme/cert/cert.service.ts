@@ -40,170 +40,83 @@ export class CertService extends CommonService<
     // await this.sync();
 
     /**账户信息 */
-    const account = await this.accountSrv.show(1);
-    console.debug('账户信息', account);
-    /**DNS服务商 */
-    const provider = await this.keySrv.show(1);
-    console.debug('云服务商信息', provider);
-    // /**创建 ACME 客户端 */
-    const client = new Client({
-      directoryUrl: account.config.staging
-        ? directory.letsencrypt.staging
-        : directory.letsencrypt.production,
-      accountKey: account.accountKey,
-    });
-    console.debug('云服务商信息', client);
-    const result = await client.createAccount({
-      termsOfServiceAgreed: true,
-      contact: [`mailto:${account.config.email}`],
-    });
-    console.debug('ACME账号注册成功', result);
+    // const account = await this.accountSrv.show(1);
+    // console.debug('账户信息', account);
+    // /**DNS服务商 */
+    // const provider = await this.keySrv.show(1);
+    // console.debug('云服务商信息', provider);
+    // // /**创建 ACME 客户端 */
+    // const client = new Client({
+    //   directoryUrl: account.config.staging
+    //     ? directory.letsencrypt.staging
+    //     : directory.letsencrypt.production,
+    //   accountKey: account.accountKey,
+    // });
+    // console.debug('云服务商信息', client);
+    // const url = client.getAccountUrl();
+    // console.debug('账号URL', url);
+    // const result = await client.createAccount({
+    //   termsOfServiceAgreed: true,
+    //   contact: [`mailto:${account.config.email}`],
+    // });
+    // console.debug('ACME账号注册成功', result);
 
-    const order = await client.createOrder({
-      identifiers: [{ type: 'dns', value: '*.api.marbleqi.top' }],
-    });
-    console.debug('订单创建成功', order);
+    // const order = await client.createOrder({
+    //   identifiers: [{ type: 'dns', value: '*.api.marbleqi.top' }],
+    // });
+    // console.debug('订单创建成功', order);
 
-    const authorizations = await client.getAuthorizations(order);
-    console.debug('授权信息', authorizations);
+    // const authorizations = await client.getAuthorizations(order);
+    // console.debug('授权信息', authorizations);
 
-    for (const authz of authorizations) {
-      const challenge = authz.challenges.find((c) => c.type === 'dns-01');
-      if (challenge) {
-        const dnsRecordValue =
-          await client.getChallengeKeyAuthorization(challenge);
-        // const dnsRecordName = `_acme-challenge.${authz.identifier.value.replace(/\.?marbleqi\.top$/, '')}`;
-        const dnsRecordName = `_acme-challenge.api`;
-        console.debug('DNS记录', dnsRecordName, dnsRecordValue);
-        // 添加 DNS 记录
-        await this.aliSrv.create(
-          1,
-          'marbleqi.top',
-          dnsRecordName,
-          'TXT',
-          dnsRecordValue,
-        );
-        console.debug('已添加DNS记录', dnsRecordName, dnsRecordValue);
-        // 标记挑战为已完成
-        await client.completeChallenge(challenge);
-      }
-    }
+    // for (const authz of authorizations) {
+    //   const challenge = authz.challenges.find((c) => c.type === 'dns-01');
+    //   if (challenge) {
+    //     const dnsRecordValue =
+    //       await client.getChallengeKeyAuthorization(challenge);
+    //     // const dnsRecordName = `_acme-challenge.${authz.identifier.value.replace(/\.?marbleqi\.top$/, '')}`;
+    //     const dnsRecordName = `_acme-challenge.api`;
+    //     console.debug('DNS记录', dnsRecordName, dnsRecordValue);
+    //     // 添加 DNS 记录
+    //     await this.aliSrv.create(
+    //       1,
+    //       'marbleqi.top',
+    //       dnsRecordName,
+    //       'TXT',
+    //       dnsRecordValue,
+    //     );
+    //     console.debug('已添加DNS记录', dnsRecordName, dnsRecordValue);
+    //     // 标记挑战为已完成
+    //     await client.completeChallenge(challenge);
+    //   }
+    // }
 
-    for (const authz of authorizations) {
-      await client.waitForValidStatus(authz);
-      console.debug('授权验证成功', authz);
-    }
+    // for (const authz of authorizations) {
+    //   await client.waitForValidStatus(authz);
+    //   console.debug('授权验证成功', authz);
+    // }
 
-    const [key, csr] = await crypto.createCsr({
-      commonName: '*.api.marbleqi.top',
-    });
+    // const [key, csr] = await crypto.createCsr({
+    //   commonName: '*.api.marbleqi.top',
+    // });
 
-    await client.finalizeOrder(order, csr);
-    console.debug('证书申请成功', order);
+    // await client.finalizeOrder(order, csr);
+    // console.debug('证书申请成功', order);
 
-    const certificate = await client.getCertificate(order);
-    console.debug('获取证书', certificate);
-    console.debug('证书私钥', key.toString());
+    // const certificate = await client.getCertificate(order);
+    // console.debug('获取证书', certificate);
+    // console.debug('证书私钥', key.toString());
 
-    for (const authz of authorizations) {
-      const challenge = authz.challenges.find((c) => c.type === 'dns-01');
-      if (challenge) {
-        // const dnsRecordName = `_acme-challenge.${authz.identifier.value.replace(/\.?marbleqi\.top$/, '')}`;
-        const dnsRecordName = `_acme-challenge.api`;
+    // for (const authz of authorizations) {
+    //   const challenge = authz.challenges.find((c) => c.type === 'dns-01');
+    //   if (challenge) {
+    //     // const dnsRecordName = `_acme-challenge.${authz.identifier.value.replace(/\.?marbleqi\.top$/, '')}`;
+    //     const dnsRecordName = `_acme-challenge.api`;
 
-        // 删除 DNS 记录
-        await this.aliSrv.delete(1, 'marbleqi.top', dnsRecordName);
-        console.debug('删除 DNS 记录', dnsRecordName, '成功');
-      }
-    }
-  }
-
-  /**
-   * 申请证书
-   * @param id 证书ID
-   */
-  async auto(id: number) {
-    /**证书信息 */
-    const current = await this.show(id);
-    /**账户信息 */
-    const account = await this.accountSrv.show(current.config.accountId);
-    /**DNS服务商 */
-    const provider = await this.keySrv.show(current.config.dns);
-    /**创建 ACME 客户端 */
-    const client = new Client({
-      directoryUrl: account.config.staging
-        ? directory.letsencrypt.staging
-        : directory.letsencrypt.production,
-      accountKey: account.accountKey,
-    });
-
-    const order = await client.createOrder({
-      identifiers: [{ type: 'dns', value: '*.example.com' }],
-    });
-
-    // 创建 CSR（证书签名请求）
-    const [key, csr] = await crypto.createCsr({
-      commonName: current.config.domain,
-      altNames: current.config.sans,
-    });
-    try {
-      // 申请证书
-      const cert = await client.auto({
-        csr,
-        email: account.config.email,
-        termsOfServiceAgreed: true,
-        challengePriority: ['dns-01'],
-        challengeCreateFn: async (authz, challenge, keyAuthorization) => {
-          console.debug('challenge.type', challenge.type);
-          if (challenge.type === 'dns-01') {
-            const dnsRecordValue =
-              await client.getChallengeKeyAuthorization(challenge);
-            const dnsRecordName = `_acme-challenge.${authz.identifier.value}`;
-            console.log('create authz', authz);
-            console.log('create challenge', challenge);
-            console.log('create keyAuthorization', keyAuthorization);
-            console.log(`需要添加DNS主机名： ${dnsRecordName}`);
-            console.log(`需要添加DNS记录值： ${dnsRecordValue}`);
-            if (provider.config.provider === 'aliyun') {
-              // 增加DNS记录
-              await this.aliSrv.create(
-                provider.id,
-                'marbleqi.top',
-                dnsRecordName,
-                'TXT',
-                dnsRecordValue,
-              );
-            } else if (provider.config.provider === 'aws') {
-            } else if (provider.config.provider === 'tencent') {
-            }
-          }
-        },
-        challengeRemoveFn: async (authz, challenge, keyAuthorization) => {
-          if (challenge.type === 'dns-01') {
-            const dnsRecordName = `_acme-challenge.${authz.identifier.value}`;
-            console.log('delete authz', authz);
-            console.log('delete challenge', challenge);
-            console.log('delete keyAuthorization', keyAuthorization);
-            console.log(`删除DNS记录：${dnsRecordName}`);
-            if (provider.config.provider === 'aliyun') {
-              //  await this.aliSrv.delete(
-              //     provider.id,
-              //     'marbleqi.top',
-              //     dnsRecordName,
-              //   );
-            } else if (provider.config.provider === 'aws') {
-            } else if (provider.config.provider === 'tencent') {
-            }
-          }
-        },
-      });
-      console.log('证书申请成功');
-
-      console.debug('证书：', cert);
-      console.debug('私钥：', key.toString());
-      await this.certRepository.update(id, { key: key.toString(), cert });
-    } catch (error) {
-      console.error('发生错误:', error);
-    }
+    //     // 删除 DNS 记录
+    //     await this.aliSrv.delete(1, 'marbleqi.top', dnsRecordName);
+    //     console.debug('删除 DNS 记录', dnsRecordName, '成功');
+    //   }
+    // }
   }
 }

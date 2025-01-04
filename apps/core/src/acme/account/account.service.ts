@@ -1,9 +1,5 @@
 // 外部依赖
-import {
-  Injectable,
-  NotFoundException,
-  ConflictException,
-} from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsSelect, MoreThan } from 'typeorm';
 import * as acme from 'acme-client';
@@ -89,11 +85,14 @@ export class AccountService extends CommonService<
         : acme.directory.letsencrypt.production,
       accountKey,
     });
-    // 注册账户
+    /**ACME账户 */
     const account = await client.createAccount({
       termsOfServiceAgreed: true,
       contact: [`mailto:${config.email}`],
     });
+    if (account.status !== 'valid') {
+      throw new ConflictException(`${this.description}注册失败`);
+    }
     console.log('账户注册成功', account);
     /**对象信息 */
     const value = {

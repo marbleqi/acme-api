@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // 内部依赖
 import { SharedModule } from '@shared';
 import { UserEntity, UserLogEntity, AuthModule } from '@auth';
-import { AccountService, AccountGateway, AccountController } from '.';
+import { PassportService, PassportController } from '.';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { AccountService, AccountGateway, AccountController } from '.';
     AuthModule,
     TypeOrmModule.forFeature([UserEntity, UserLogEntity]),
   ],
-  providers: [AccountService, AccountGateway],
-  controllers: [AccountController],
+  providers: [PassportService],
+  controllers: [PassportController],
 })
-export class AccountModule {}
+export class PassportModule {}

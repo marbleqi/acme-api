@@ -17,24 +17,10 @@ export class CertConfigEntity {
   })
   accountId: number;
 
-  /**主域名 */
-  @ApiProperty({ description: '主域名', example: 'example.com' })
-  @Column({ type: 'text', name: 'domain', comment: '主域名' })
+  /**域名 */
+  @ApiProperty({ description: '域名', example: 'example.com' })
+  @Column({ type: 'text', name: 'domain', comment: '域名' })
   domain: string;
-
-  /**备用域名 */
-  @ApiProperty({
-    description: '备用域名',
-    example: ['example.com', 'www.example.com'],
-  })
-  @Column({
-    type: 'text',
-    name: 'sans',
-    default: [],
-    array: true,
-    comment: '备用域名',
-  })
-  sans: string[];
 
   /**域名解析服务商，关联到云服务商密钥表 */
   @ApiProperty({ description: '域名解析服务商', example: 1 })
@@ -69,6 +55,32 @@ export class CertEntity extends CommonEntity {
   @ApiProperty({ description: '证书', example: '******' })
   @Column({ type: 'text', name: 'cert', nullable: true, comment: '证书' })
   cert: string;
+
+  /**证书生效时间 */
+  @ApiProperty({ description: '证书生效时间', example: 1726243200000 })
+  @Column({
+    type: 'bigint',
+    name: 'cert_start_time',
+    default: 0,
+    comment: '证书生效时间',
+  })
+  certStartTime: number;
+
+  /**证书过期时间 */
+  @ApiProperty({ description: '证书过期时间', example: 1734105599000 })
+  @Column({
+    type: 'bigint',
+    name: 'cert_end_time',
+    default: 0,
+    comment: '证书过期时间',
+  })
+  certEndTime: number;
+
+  /**证书状态 */
+  @ApiProperty({ description: '证书状态', example: 'PAYED' })
+  @Column({ type: 'text', name: 'cert_status', comment: '证书状态' })
+  @Index()
+  certStatus: string;
 }
 
 /**证书日志表 */
@@ -94,4 +106,35 @@ export class CertLogEntity extends CommonLogEntity {
   @ApiProperty({ description: '证书', example: '******' })
   @Column({ type: 'text', name: 'cert', nullable: true, comment: '证书' })
   cert: string;
+
+  /**证书生效时间 */
+  @ApiProperty({ description: '证书生效时间', example: 1726243200000 })
+  @Column({
+    type: 'bigint',
+    name: 'cert_start_time',
+    default: 0,
+    comment: '证书生效时间',
+  })
+  certStartTime: number;
+
+  /**证书过期时间 */
+  @ApiProperty({ description: '证书过期时间', example: 1734105599000 })
+  @Column({
+    type: 'bigint',
+    name: 'cert_end_time',
+    default: 0,
+    comment: '证书过期时间',
+  })
+  certEndTime: number;
+
+  /**证书状态 */
+  @ApiProperty({ description: '证书状态', example: 'new' })
+  @Column({
+    type: 'text',
+    name: 'cert_status',
+    default: 'new',
+    comment: '证书状态',
+  })
+  @Index()
+  certStatus: 'new' | 'pending' | 'ready' | 'processing' | 'valid' | 'invalid';
 }

@@ -7,7 +7,7 @@ import { KeyDto, KeyEntity, KeyLogEntity, KeyService } from '@shared';
 import { CommonController } from '@auth';
 
 @Controller('key')
-@ApiTags('访问控制-角色')
+@ApiTags('系统管理-密钥')
 export class KeyController extends CommonController<
   number,
   KeyDto,

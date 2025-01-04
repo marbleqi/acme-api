@@ -1,4 +1,7 @@
 // 注：需要按照依赖关系顺序导入
+// 导入接口
+export * from './dns/dns.interface';
+
 // 导入DTO
 export * from './account/account.dto';
 export * from './cert/cert.dto';
@@ -10,6 +13,7 @@ export * from './deploy/deploy.entity';
 
 // 导入服务
 export * from './account/account.service';
+export * from './dns/dns.service';
 export * from './cert/cert.service';
 export * from './deploy/deploy.service';
 

@@ -10,7 +10,7 @@ import {
   Res,
   OnApplicationBootstrap,
 } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { Response } from 'express';
 import { ObjectLiteral } from 'typeorm';
 
@@ -134,6 +134,12 @@ export class CommonController<
    */
   @Get('index')
   @ApiOperation({ summary: '获取对象清单' })
+  @ApiQuery({
+    name: 'operateId',
+    description: '操作序号，用于获取增量数据',
+    required: false,
+    example: 0,
+  })
   @Abilities(1)
   private async index(
     @Query('operateId', OperatePipe) operateId: number,
@@ -149,6 +155,12 @@ export class CommonController<
    */
   @Get('show/:pk')
   @ApiOperation({ summary: '获取对象详情' })
+  @ApiParam({
+    name: 'pk',
+    description: '对象主键值',
+    required: true,
+    example: 1,
+  })
   @Abilities(2)
   private async show(
     @Param('pk') pk: pkType,
@@ -164,6 +176,12 @@ export class CommonController<
    */
   @Get('log/:pk')
   @ApiOperation({ summary: '获取对象变更日志' })
+  @ApiParam({
+    name: 'pk',
+    description: '对象主键值',
+    required: true,
+    example: 1,
+  })
   @Abilities(3)
   private async log(
     @Param('pk') pk: pkType,
@@ -189,8 +207,14 @@ export class CommonController<
    * @param config 新对象信息
    * @param res 响应上下文
    */
+  /**
+   * 创建对象
+   * @param config 新对象信息
+   * @param res 响应上下文
+   */
   @Post('create')
   @ApiOperation({ summary: '创建对象' })
+  @ApiBody({ description: '新对象信息' })
   @Abilities(5)
   private async create(
     @Body() config: CreateDto,
@@ -200,7 +224,6 @@ export class CommonController<
     const reqId = Number(res.locals.reqId);
     res.locals.result = await this.commonSrv.create(config, userId, reqId);
   }
-
   /**
    * 更新对象（含禁用）
    * @param pk 对象主键值
@@ -209,6 +232,7 @@ export class CommonController<
    */
   @Post('update/:pk')
   @ApiOperation({ summary: '更新对象（含禁用）' })
+  @ApiBody({ description: '待更新信息' })
   @Abilities(6)
   private async update(
     @Param('pk') pk: pkType,
