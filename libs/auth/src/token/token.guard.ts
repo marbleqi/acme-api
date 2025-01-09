@@ -21,6 +21,8 @@ import {
 } from '@shared';
 import { UserService, TokenService } from '..';
 
+// TODO：还未完成相关令牌身份认证和访问控制认证逻辑
+
 /**全局路由守卫
  *
  * 统一完成token令牌访问控制和权限点访问控制
@@ -113,6 +115,7 @@ export class TokenGuard implements CanActivate {
     const token = await this.tokenSrv.show(tokenKey);
     /**用户ID */
     const userId = Number(token.id) || 0;
+    console.debug('令牌路由守卫信息A', tokenKey, token, userId);
     // 如果用户ID无效，则令牌验证无效
     if (!userId) {
       /**请求结果 */

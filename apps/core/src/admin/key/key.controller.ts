@@ -6,10 +6,11 @@ import { ApiTags } from '@nestjs/swagger';
 import { KeyDto, KeyEntity, KeyLogEntity, KeyService } from '@shared';
 import { CommonController } from '@auth';
 
+// DONE:已完成检查
+
 @Controller('key')
 @ApiTags('系统管理-密钥')
 export class KeyController extends CommonController<
-  number,
   KeyDto,
   KeyDto,
   KeyEntity,

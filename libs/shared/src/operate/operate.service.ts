@@ -6,6 +6,8 @@ import { Repository } from 'typeorm';
 // 内部依赖
 import { OperateEntity } from '..';
 
+// DONE:已完成检查
+
 /**操作序号服务 */
 @Injectable()
 export class OperateService {

@@ -11,7 +11,7 @@ import { formatRFC7231 } from 'date-fns';
 import { firstValueFrom } from 'rxjs';
 
 // 内部依赖
-import { KeyService } from '@shared';
+import { random, KeyService } from '@shared';
 import { AliyunRoaConfig, AliyunRpcConfig } from '..';
 
 /**阿里云API封装 */
@@ -28,31 +28,6 @@ export class ApiService {
   ) {}
 
   /**
-   * 生成指定长度的随机字符串
-   * @param length 随机字符串长度
-   * @param type 随机字符串类型，默认字符串型
-   * @returns 指定长度的随机字符串
-   */
-  private random(length: number, type: 'string' | 'number' = 'string'): string {
-    /**随机字符串游标 */
-    let i = 0;
-    /**可选字符集 */
-    const chars =
-      type === 'string'
-        ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
-        : '1234567890';
-    /**字符集长度 */
-    const maxPos = chars.length;
-    /**随机字符串 */
-    let result: string = '';
-    while (i < length) {
-      result += chars.charAt(Math.floor(Math.random() * maxPos));
-      i++;
-    }
-    return result;
-  }
-
-  /**
    * 阿里云roa接口调用
    * @param config 接口参数
    * @returns 返回接口调用结果
@@ -65,7 +40,7 @@ export class ApiService {
     /**请求数据 */
     const body = config.body ? config.body : {};
     /**随机字符串 */
-    const nonce = this.random(32);
+    const nonce = random(32);
     /**基础消息头 */
     const headers: any = {
       'x-acs-version': config.version,
@@ -236,7 +211,7 @@ export class ApiService {
     /**接口参数 */
     const params = config.params ? config.params : {};
     /**随机字符串 */
-    const nonce = this.random(32);
+    const nonce = random(32);
     /**无签名的公共请求参数 */
     const opts = {
       Action: config.action,

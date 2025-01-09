@@ -20,6 +20,8 @@ import {
   KeyService,
 } from '.';
 
+// DONE:已完成共享模块的检查
+
 /**共享模块 */
 @Module({
   imports: [

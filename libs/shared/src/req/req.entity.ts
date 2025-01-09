@@ -8,6 +8,8 @@ import {
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
+// DONE:已完成检查
+
 /**请求日志表 */
 @Entity('sys_req_logs')
 export class ReqEntity {

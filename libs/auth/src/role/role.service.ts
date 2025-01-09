@@ -7,10 +7,11 @@ import { Repository } from 'typeorm';
 import { CommonService } from '@shared';
 import { RoleDto, RoleEntity, RoleLogEntity } from '..';
 
+// DONE:已完成检查
+
 /**角色服务 */
 @Injectable()
 export class RoleService extends CommonService<
-  number,
   RoleDto,
   RoleDto,
   RoleEntity,
@@ -67,7 +68,7 @@ export class RoleService extends CommonService<
   async grant(
     ids: number[],
     id: number,
-    userId: number = 1,
+    userId: number = 0,
     reqId: number = 0,
   ): Promise<number> {
     /**更新信息 */

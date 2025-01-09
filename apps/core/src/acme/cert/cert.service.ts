@@ -9,9 +9,10 @@ import { CommonService, KeyService } from '@shared';
 import { DnsService as AliService } from '@aliyun';
 import { CertDto, CertEntity, CertLogEntity, AccountService } from '..';
 
+// TODO：目前仅完成了相关验证，未编写具体实现。
+
 @Injectable()
 export class CertService extends CommonService<
-  number,
   CertDto,
   CertDto,
   CertEntity,

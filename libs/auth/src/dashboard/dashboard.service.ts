@@ -12,6 +12,8 @@ import {
   AbilityService,
 } from '..';
 
+// TODO：仪表板服务待开发
+
 @Injectable()
 export class DashboardService {
   /**

@@ -22,12 +22,13 @@ import {
   CommonController,
 } from '..';
 
+// DONE:已完成检查
+
 /**角色控制器 */
 @Controller('auth/role')
 @ApiTags('访问控制-角色')
 @Abilities(120)
 export class RoleController extends CommonController<
-  number,
   RoleDto,
   RoleDto,
   RoleEntity,

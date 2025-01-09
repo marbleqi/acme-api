@@ -5,6 +5,8 @@ import { ApiProperty } from '@nestjs/swagger';
 // 内部依赖
 import { CommonEntity, CommonLogEntity } from '..';
 
+// DONE:已完成检查
+
 /**排序数据表 */
 @Entity('sys_sorts')
 export class SortEntity extends CommonEntity {
@@ -16,7 +18,7 @@ export class SortEntity extends CommonEntity {
   /**排序数据 */
   @ApiProperty({ description: '排序数据', example: [1, 2] })
   @Column({ type: 'json', name: 'config', comment: '排序数据' })
-  config: any;
+  config: number[] | string[];
 }
 
 /**排序日志表 */
@@ -31,5 +33,5 @@ export class SortLogEntity extends CommonLogEntity {
   /**排序数据 */
   @ApiProperty({ description: '排序数据', example: [1, 2] })
   @Column({ type: 'json', name: 'config', comment: '排序数据' })
-  config: any;
+  config: number[] | string[];
 }

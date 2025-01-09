@@ -6,10 +6,11 @@ import { Repository, FindOptionsSelect, MoreThan } from 'typeorm';
 // 内部依赖
 import { KeyDto, KeyEntity, KeyLogEntity, CommonService } from '..';
 
+// DONE:已完成检查
+
 /**密钥管理服务 */
 @Injectable()
 export class KeyService extends CommonService<
-  number,
   KeyDto,
   KeyDto,
   KeyEntity,

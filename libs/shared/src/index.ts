@@ -11,6 +11,9 @@ export * from './setting/setting.entity';
 export * from './sort/sort.entity';
 export * from './key/key.entity';
 
+// 导入函数
+export * from './random/random';
+
 // 导入服务
 export * from './operate/operate.service';
 export * from './req/req.service';

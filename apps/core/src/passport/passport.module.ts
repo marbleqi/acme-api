@@ -7,6 +7,8 @@ import { SharedModule } from '@shared';
 import { UserEntity, UserLogEntity, AuthModule } from '@auth';
 import { PassportService, PassportController } from '.';
 
+// DONE:已完成检查
+
 @Module({
   imports: [
     SharedModule,

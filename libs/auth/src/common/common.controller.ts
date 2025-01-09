@@ -18,19 +18,19 @@ import { ObjectLiteral } from 'typeorm';
 import { CommonService, OperatePipe } from '@shared';
 import { Abilities, BaseController } from '..';
 
+// DONE:已完成检查
+
 /**
  * 通用控制器
  *
  * 用于配置通用的对象管理swagger配置
  *
- * @template pkType 主键类型，可以是 `number` 或 `string`。
  * @template CreateDto - 创建对象时使用的 DTO（数据传输对象）类型。
  * @template UpdateDto - 更新对象时使用的 DTO 类型。
  * @template Entity - 实体类型，必须是一个对象字面量。
  * @template EntityLog - 实体日志类型，必须是一个对象字面量。
  */
 export class CommonController<
-    pkType extends number | string,
     CreateDto,
     UpdateDto,
     Entity extends ObjectLiteral,
@@ -60,7 +60,6 @@ export class CommonController<
    */
   constructor(
     private readonly commonSrv: CommonService<
-      pkType,
       CreateDto,
       UpdateDto,
       Entity,
@@ -163,7 +162,7 @@ export class CommonController<
   })
   @Abilities(2)
   private async show(
-    @Param('pk') pk: pkType,
+    @Param('pk') pk: number | string,
     @Res() res: Response,
   ): Promise<void> {
     res.locals.result = await this.commonSrv.show(pk);
@@ -184,7 +183,7 @@ export class CommonController<
   })
   @Abilities(3)
   private async log(
-    @Param('pk') pk: pkType,
+    @Param('pk') pk: number | string,
     @Res() res: Response,
   ): Promise<void> {
     res.locals.result = await this.commonSrv.log(pk);
@@ -235,7 +234,7 @@ export class CommonController<
   @ApiBody({ description: '待更新信息' })
   @Abilities(6)
   private async update(
-    @Param('pk') pk: pkType,
+    @Param('pk') pk: number | string,
     @Body() config: UpdateDto,
     @Res() res: Response,
   ): Promise<void> {
@@ -254,7 +253,7 @@ export class CommonController<
   @ApiOperation({ summary: '覆盖对象（有则更新，无则创建）' })
   @Abilities(6)
   private async upsert(
-    @Param('pk') pk: pkType,
+    @Param('pk') pk: number | string,
     @Body() config: UpdateDto,
     @Res() res: Response,
   ): Promise<void> {

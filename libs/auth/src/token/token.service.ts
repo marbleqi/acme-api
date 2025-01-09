@@ -2,8 +2,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 // 内部依赖
-import { RedisService, SettingService } from '@shared';
-import { UserService } from '..';
+import { random, RedisService, SettingService } from '@shared';
+
+// TODO：已完成相关逻辑编写，但尚未经过验证
 
 /**
  * 令牌服务
@@ -20,7 +21,6 @@ export class TokenService {
   constructor(
     private readonly redisSrv: RedisService,
     private readonly settingSrv: SettingService,
-    private readonly userSrv: UserService,
   ) {}
 
   /**
@@ -67,88 +67,85 @@ export class TokenService {
    * @returns 响应报文
    */
   async create(id: number) {
-    // console.debug('id', id, this.settingSrv.list());
-    // /**系统配置 */
-    // const setting = this.settingSrv.get('system').value;
-    // console.debug('setting', setting);
-    // /**令牌 */
-    // let tokenStr: string;
-    // /**令牌已存在标记 */
-    // let exists: number;
-    // do {
-    //   tokenStr = this.userSrv.random(40);
-    //   exists = await this.redisSrv.exists(`token:${tokenStr}`);
-    // } while (exists);
-    // /**令牌过期时间 */
-    // const expired = Date.now() + Number(setting.expired) * 60000 + 60000;
-    // const token = {
-    //   id,
-    //   token: tokenStr,
-    //   expired,
-    //   createAt: Date.now(),
-    //   updateAt: Date.now(),
-    // };
-    // console.debug('token', token);
-    // // 缓存令牌
-    // await this.redisSrv.hmset(`token:${tokenStr}`, token);
-    // // 设置缓存有效期
-    // await this.redisSrv.pexpireat(`token:${tokenStr}`, expired);
-
+    /**系统配置 */
+    const config = this.settingSrv.cache.get('system').config;
+    console.debug('setting', config);
+    /**令牌 */
+    let tokenStr: string;
+    /**令牌已存在标记 */
+    let exists: number;
+    do {
+      tokenStr = random(40);
+      exists = await this.redisSrv.exists(`token:${tokenStr}`);
+    } while (exists);
+    /**令牌过期时间 */
+    const expired = Date.now() + Number(config.expired) * 60000 + 60000;
+    const token = {
+      id,
+      token: tokenStr,
+      expired,
+      createAt: Date.now(),
+      updateAt: Date.now(),
+    };
+    console.debug('token', token);
+    // 缓存令牌
+    await this.redisSrv.hmset(`token:${tokenStr}`, token);
+    // 设置缓存有效期
+    await this.redisSrv.pexpireat(`token:${tokenStr}`, expired);
     // 返回令牌信息
-    return 'token';
+    return token;
   }
 
   /**
    * 刷新令牌，旧令牌换新令牌
-   * @param oldtoken 原令牌
+   * @param oldToken 原令牌
    * @returns 消息报文
    */
-  async refresh(oldtoken: string) {
-    // /**系统配置 */
-    // const setting = this.settingSrv.get('system').value;
-    // /**令牌过期时间 */
-    // const expired = Date.now() + Number(setting.expired) * 60000 + 60000;
-    // // 重新设置令牌过期时间
-    // let result: number = await this.redisSrv.pexpireat(
-    //   `token:${oldtoken}`,
-    //   expired,
-    // );
-    // // 令牌过期时间更新失败
-    // if (!result) {
-    //   throw new UnauthorizedException(`令牌更新失败`);
-    // }
-    // /**新令牌 */
-    // let tokenStr: string;
-    // /**新令牌存在标记 */
-    // let exists: number;
-    // do {
-    //   tokenStr = this.userSrv.random(40);
-    //   exists = await this.redisSrv.exists(`token:${tokenStr}`);
-    // } while (exists);
-    // /**更换令牌键值 */
-    // result = await this.redisSrv.renamenx(
-    //   `token:${oldtoken}`,
-    //   `token:${tokenStr}`,
-    // );
-    // // 令牌更新失败
-    // if (!result) {
-    //   throw new UnauthorizedException(`令牌更新失败`);
-    // }
-    // let token: any = await this.redisSrv.hgetall(`token:${tokenStr}`);
-    // /**令牌过期时间 */
-    // console.debug('tokenA', token);
-    // token = {
-    //   id: Number(token.id),
-    //   token: tokenStr,
-    //   createAt: Number(token.createAt),
-    //   expired,
-    //   updateAt: Date.now(),
-    // };
-    // console.debug('tokenB', token);
-    // // 更新令牌值
-    // await this.redisSrv.hmset(`token:${tokenStr}`, token);
+  async refresh(oldToken: string) {
+    /**新令牌 */
+    let newToken: string;
+    /**新令牌存在标记 */
+    let exists: number;
+    // 生成新令牌
+    do {
+      newToken = random(40);
+      exists = await this.redisSrv.exists(`token:${newToken}`);
+    } while (exists);
+    /**更换令牌键值 */
+    let result: number = await this.redisSrv.renamenx(
+      `token:${oldToken}`,
+      `token:${newToken}`,
+    );
+    // 令牌更新失败
+    if (!result) {
+      throw new UnauthorizedException(`新令牌生成失败`);
+    }
+    /**系统配置 */
+    const config = this.settingSrv.cache.get('system').config;
+    /**令牌过期时间 */
+    const expired = Date.now() + Number(config.expired ?? 30) * 60000 + 60000;
+    // 设置新令牌过期时间
+    result = await this.redisSrv.pexpireat(`token:${newToken}`, expired);
+    // 令牌过期时间更新失败
+    if (!result) {
+      throw new UnauthorizedException(`令牌更新失败`);
+    }
+
+    let token: any = await this.redisSrv.hgetall(`token:${newToken}`);
+    /**令牌过期时间 */
+    console.debug('tokenA', token);
+    token = {
+      id: Number(token.id),
+      token: newToken,
+      createAt: Number(token.createAt),
+      expired,
+      updateAt: Date.now(),
+    };
+    console.debug('tokenB', token);
+    // 更新令牌值
+    await this.redisSrv.hmset(`token:${newToken}`, token);
     // 返回新的令牌信息
-    return 'token';
+    return token;
   }
 
   /**

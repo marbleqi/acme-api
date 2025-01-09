@@ -6,10 +6,11 @@ import { Repository } from 'typeorm';
 // 内部依赖
 import { SortEntity, SortLogEntity, CommonService } from '..';
 
+// DONE:已完成检查
+
 /**排序服务 */
 @Injectable()
 export class SortService extends CommonService<
-  string,
   any,
   any,
   SortEntity,

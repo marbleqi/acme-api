@@ -4,6 +4,8 @@ import { Injectable } from '@nestjs/common';
 // 内部依赖
 import { Ability } from '..';
 
+// DONE:已完成检查
+
 /**权限点服务 */
 @Injectable()
 export class AbilityService {

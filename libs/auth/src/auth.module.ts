@@ -22,6 +22,8 @@ import {
   DashboardController,
 } from '.';
 
+// DONE:已完成检查
+
 /**访问控制模块 */
 @Module({
   imports: [

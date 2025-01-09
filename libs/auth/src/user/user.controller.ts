@@ -15,6 +15,8 @@ import {
 import { Response } from 'express';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
+// TODO：未完成相关验证
+
 // 内部依赖
 import {
   UserDto,
@@ -30,7 +32,6 @@ import {
 @ApiTags('访问控制-用户')
 @Abilities(130)
 export class UserController extends CommonController<
-  number,
   UserDto,
   UserDto,
   UserEntity,

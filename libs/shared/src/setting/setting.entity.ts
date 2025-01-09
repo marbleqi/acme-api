@@ -5,6 +5,8 @@ import { ApiProperty } from '@nestjs/swagger';
 // 内部依赖
 import { CommonEntity, CommonLogEntity } from '..';
 
+// DONE:已完成检查
+
 /**配置表 */
 @Entity('sys_settings')
 export class SettingEntity extends CommonEntity {

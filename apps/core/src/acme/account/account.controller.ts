@@ -10,9 +10,10 @@ import {
   AccountService,
 } from '..';
 
+// TODO：目前仅编写了简单实现。
+
 @Controller('acme/account')
 export class AccountController extends CommonController<
-  number,
   AccountDto,
   AccountDto,
   AccountEntity,

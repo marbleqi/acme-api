@@ -1,6 +1,8 @@
 /**权限点 */
 import { ApiProperty } from '@nestjs/swagger';
 
+// DONE:已完成检查
+
 /**令牌 */
 export class Token {
   /**用户ID */

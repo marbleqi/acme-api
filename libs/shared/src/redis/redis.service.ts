@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { RedisOptions } from 'ioredis';
 import Redis from 'ioredis';
 
+// DONE:已完成检查
+
 /**缓存服务（Redis） */
 @Injectable()
 export class RedisService extends Redis {

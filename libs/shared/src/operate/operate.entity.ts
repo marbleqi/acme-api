@@ -2,6 +2,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, AfterLoad } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
+// DONE:已完成检查
+
 /**操作序号表 */
 @Entity('sys_operates')
 export class OperateEntity {

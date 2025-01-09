@@ -5,6 +5,8 @@ import { ApiProperty } from '@nestjs/swagger';
 // 内部依赖
 import { CommonEntity, CommonLogEntity } from '@shared';
 
+// DONE:已完成检查
+
 /**角色配置 */
 export class RoleConfigEntity {
   /**角色名称 */

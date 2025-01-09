@@ -8,10 +8,11 @@ import * as acme from 'acme-client';
 import { CreateEntity, CommonService } from '@shared';
 import { AccountDto, AccountEntity, AccountLogEntity } from '..';
 
+// TODO：目前仅编写了简单实现
+
 /**账户服务 */
 @Injectable()
 export class AccountService extends CommonService<
-  number,
   AccountDto,
   AccountDto,
   AccountEntity,
@@ -70,7 +71,7 @@ export class AccountService extends CommonService<
    */
   async create(
     config: AccountDto,
-    userId: number = 1,
+    userId: number = 0,
     reqId: number = 0,
   ): Promise<number> {
     /**更新信息 */

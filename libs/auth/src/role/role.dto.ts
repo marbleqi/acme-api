@@ -2,6 +2,8 @@
 import { IsDefined, IsNotEmpty, IsArray } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
+// DONE:已完成检查
+
 /**角色信息DTO */
 export class RoleDto {
   /**角色名称 */

@@ -10,8 +10,10 @@ import {
 // 内部依赖
 import { Ability, AbilityService } from '..';
 
+// DONE:已完成检查
+
 /**
- * 通用控制器
+ * 控制器基类
  *
  * 用于配置通用的swagger配置
  */

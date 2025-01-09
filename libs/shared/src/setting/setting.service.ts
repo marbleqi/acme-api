@@ -6,10 +6,11 @@ import { Repository } from 'typeorm';
 // 内部依赖
 import { SettingEntity, SettingLogEntity, CommonService } from '..';
 
+// DONE:已完成检查
+
 /**配置服务 */
 @Injectable()
 export class SettingService extends CommonService<
-  string,
   any,
   any,
   SettingEntity,
@@ -37,8 +38,8 @@ export class SettingService extends CommonService<
     if (!this.cache.has('system')) {
       /**系统配置 */
       const config = {
-        name: '管理平台',
-        title: '管理平台',
+        name: '证书管理平台',
+        title: '证书管理平台',
         description: '平台在手，天下我有。',
         company: '***公司',
         domain: '***.com',

@@ -2,6 +2,8 @@
 import { Column, PrimaryGeneratedColumn, Index, AfterLoad } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
+// DONE:已完成检查
+
 /**通用创建嵌入实体 */
 export class CreateEntity {
   /**创建用户ID */
@@ -9,6 +11,7 @@ export class CreateEntity {
   @Column({
     type: 'int',
     name: '_user_id',
+    default: 0,
     comment: '创建用户ID',
     update: false,
   })
@@ -36,7 +39,7 @@ export class CreateEntity {
 export class UpdateEntity {
   /**更新用户ID */
   @ApiProperty({ description: '更新用户ID', example: 1 })
-  @Column({ type: 'int', name: '_user_id', comment: '更新用户ID' })
+  @Column({ type: 'int', name: '_user_id', default: 0, comment: '更新用户ID' })
   userId: number;
 
   /**更新时间 */

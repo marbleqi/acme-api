@@ -22,6 +22,8 @@ import {
 // 内部依赖
 import { Ability, Abilities, RoleService, BaseController } from '..';
 
+// DONE:已完成检查
+
 /**权限点控制器 */
 @Controller('auth/ability')
 @ApiTags('访问控制-权限点')

@@ -5,6 +5,9 @@ import { Response } from 'express';
 // 内部依赖
 import { DashboardService } from '..';
 
+// TODO：仪表板控制器待开发
+
+/** */
 @Controller('auth/dashboard')
 export class DashboardController {
   /**

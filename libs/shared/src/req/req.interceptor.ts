@@ -11,6 +11,8 @@ import { map, tap, catchError } from 'rxjs';
 // 内部依赖
 import { ReqEntity, ReqService } from '..';
 
+// DONE:已完成检查
+
 /**全局拦截器
  *
  * 给响应报文加上请求标记，并发出响应，发送记录日志任务

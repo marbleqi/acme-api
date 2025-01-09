@@ -5,9 +5,10 @@ import { Controller } from '@nestjs/common';
 import { CommonController } from '@auth';
 import { CertDto, CertEntity, CertLogEntity, CertService } from '..';
 
+// TODO：目前只编写了基础功能，未编写具体实现
+
 @Controller('acme/cert')
 export class CertController extends CommonController<
-  number,
   CertDto,
   CertDto,
   CertEntity,

@@ -1,6 +1,8 @@
 // 外部依赖
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 
+// DONE:已完成检查
+
 /**操作序号管道 */
 @Injectable()
 export class OperatePipe implements PipeTransform {

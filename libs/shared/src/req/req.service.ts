@@ -6,6 +6,8 @@ import { Repository, SelectQueryBuilder } from 'typeorm';
 // 内部依赖
 import { ReqDto, ReqEntity } from '..';
 
+// DONE:已完成检查
+
 /**请求日志服务 */
 @Injectable()
 export class ReqService {

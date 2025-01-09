@@ -15,10 +15,11 @@ import { genSalt, hash, compare, compareSync } from 'bcrypt';
 import { CommonService } from '@shared';
 import { UserDto, UserEntity, UserLogEntity, RoleService } from '..';
 
+// TODO：目前仅完成了用户的增删改查，未完成身份认证和访问控制认证。
+
 /**用户服务 */
 @Injectable()
 export class UserService extends CommonService<
-  number,
   UserDto,
   UserDto,
   UserEntity,
@@ -139,7 +140,7 @@ export class UserService extends CommonService<
    */
   async create(
     config: UserDto,
-    userId: number = 1,
+    userId: number = 0,
     reqId: number = 0,
   ): Promise<number | string> {
     /**查询已使用了该登陆名的用户 */
@@ -240,7 +241,7 @@ export class UserService extends CommonService<
    */
   async unlock(
     ids: number[],
-    userId: number = 1,
+    userId: number = 0,
     reqId: number = 0,
   ): Promise<number> {
     /**更新信息 */
@@ -266,7 +267,7 @@ export class UserService extends CommonService<
   async resetpsw(
     id: number,
     newpsw: string,
-    userId: number = 1,
+    userId: number = 0,
     reqId: number = 0,
   ): Promise<number> {
     /**更新信息 */
@@ -299,7 +300,7 @@ export class UserService extends CommonService<
   async grant(
     ids: number[],
     id: number,
-    userId: number = 1,
+    userId: number = 0,
     reqId: number = 0,
   ): Promise<number> {
     /**更新信息 */

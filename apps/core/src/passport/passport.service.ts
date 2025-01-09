@@ -16,6 +16,8 @@ import { BaseService } from '@shared';
 import { UserEntity, UserLogEntity } from '@auth';
 import { LoginDto } from '.';
 
+// TODO：仅配置了密码登录，后续还应加上扫码登录功能
+
 @Injectable()
 export class PassportService extends BaseService {
   /**

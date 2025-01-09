@@ -10,8 +10,10 @@ import { createHmac } from 'crypto';
 import { firstValueFrom } from 'rxjs';
 
 // 内部依赖
-import { KeyService } from '@shared';
+import { random, KeyService } from '@shared';
 import { AliyunRpcConfig } from '..';
+
+// TODO：待功能验证
 
 @Injectable()
 export class DnsService {
@@ -24,31 +26,6 @@ export class DnsService {
     private readonly http: HttpService,
     private readonly keySrv: KeyService,
   ) {}
-
-  /**
-   * 生成指定长度的随机字符串
-   * @param length 随机字符串长度
-   * @param type 随机字符串类型，默认字符串型
-   * @returns 指定长度的随机字符串
-   */
-  private random(length: number, type: 'string' | 'number' = 'string'): string {
-    /**随机字符串游标 */
-    let i = 0;
-    /**可选字符集 */
-    const chars =
-      type === 'string'
-        ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
-        : '1234567890';
-    /**字符集长度 */
-    const maxPos = chars.length;
-    /**随机字符串 */
-    let result: string = '';
-    while (i < length) {
-      result += chars.charAt(Math.floor(Math.random() * maxPos));
-      i++;
-    }
-    return result;
-  }
 
   /**
    * 阿里云rpc接口调用
@@ -66,7 +43,7 @@ export class DnsService {
     /**接口参数 */
     const params = config.params ? config.params : {};
     /**随机字符串 */
-    const nonce = this.random(32);
+    const nonce = random(32);
     /**无签名的公共请求参数 */
     const opts = {
       Action: config.action,

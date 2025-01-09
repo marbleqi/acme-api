@@ -4,6 +4,8 @@ import { Inject } from '@nestjs/common';
 // 内部依赖
 import { UpdateEntity, OperateService } from '..';
 
+// DONE:已完成检查
+
 /**基础服务 */
 export class BaseService {
   /**操作序号服务 */
@@ -20,7 +22,7 @@ export class BaseService {
   protected async getUpdate(
     name: string,
     operate: string,
-    userId: number = 1,
+    userId: number = 0,
     reqId: number = 0,
   ): Promise<UpdateEntity> {
     /**当前时间 */

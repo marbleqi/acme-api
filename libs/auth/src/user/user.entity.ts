@@ -11,6 +11,8 @@ import { ApiProperty } from '@nestjs/swagger';
 // 内部依赖
 import { CommonEntity, CommonLogEntity } from '@shared';
 
+// DONE:已完成检查
+
 /**用户配置 */
 export abstract class UserConfigEntity {
   /**登陆名 */

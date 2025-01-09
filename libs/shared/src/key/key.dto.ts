@@ -2,6 +2,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDefined, IsNotEmpty } from 'class-validator';
 
+// DONE:已完成检查
+
 /**密钥配置DTO */
 export class KeyDto {
   /**密钥名称 */

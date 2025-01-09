@@ -18,6 +18,8 @@ import {
 // 内部依赖
 import { Abilities, TokenService, BaseController } from '..';
 
+// DONE:已完成检查
+
 /**令牌控制器 */
 @Controller('auth/token')
 @ApiTags('访问控制-令牌')

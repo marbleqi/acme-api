@@ -2,7 +2,9 @@
 import { IsDefined, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-/**用户信息DTO */
+// DONE:已完成检查
+
+/**密码登录信息DTO */
 export class LoginDto {
   /**登陆名 */
   @ApiProperty({ description: '登陆名', example: 'loginName' })

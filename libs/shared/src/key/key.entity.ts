@@ -5,6 +5,8 @@ import { ApiProperty } from '@nestjs/swagger';
 // 内部依赖
 import { CommonEntity, CommonLogEntity } from '..';
 
+// DONE:已完成检查
+
 /**密钥配置 */
 export class KeyConfigEntity {
   /**密钥名称 */
@@ -28,13 +30,13 @@ export class KeyConfigEntity {
   provider: 'aws' | 'aliyun' | 'tencent';
 
   /**key */
-  @ApiProperty({ description: 'key', example: 'key' })
-  @Column({ type: 'text', name: 'key', comment: 'key' })
+  @ApiProperty({ description: 'key', example: '*********' })
+  @Column({ type: 'text', name: 'key', default: '', comment: 'key' })
   key: string;
 
   /**KeySecret */
-  @ApiProperty({ description: 'KeySecret', example: 'KeySecret' })
-  @Column({ type: 'text', name: 'secret', comment: 'KeySecret' })
+  @ApiProperty({ description: 'KeySecret', example: '*********' })
+  @Column({ type: 'text', name: 'secret', default: '', comment: 'KeySecret' })
   secret: string;
 
   /**启用状态，true表示启用，false表示禁用 */

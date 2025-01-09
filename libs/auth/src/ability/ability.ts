@@ -1,6 +1,8 @@
 // 外部依赖
 import { ApiProperty } from '@nestjs/swagger';
 
+// DONE:已完成检查
+
 /**权限点 */
 export class Ability {
   /**权限点ID */
