@@ -8,8 +8,6 @@ import * as acme from 'acme-client';
 import { CreateEntity, CommonService } from '@shared';
 import { AccountDto, AccountEntity, AccountLogEntity } from '..';
 
-// TODO：目前仅编写了简单实现
-
 /**账户服务 */
 @Injectable()
 export class AccountService extends CommonService<

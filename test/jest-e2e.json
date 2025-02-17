@@ -11,7 +11,7 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "@lib/shared": "<rootDir>/../libs/shared/src",
-    "@lib/shared/(.*)": "<rootDir>/../libs/shared/src/$1"
+    "@shared": "<rootDir>/../libs/shared/src",
+    "@shared/(.*)": "<rootDir>/../libs/shared/src/$1"
   }
 }

@@ -1,4 +1,7 @@
+// 外部依赖
 import { NestFactory } from '@nestjs/core';
+
+// 内部依赖
 import { AppModule } from './app.module';
 
 async function bootstrap() {
