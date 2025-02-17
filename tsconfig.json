@@ -18,8 +18,8 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@lib/shared": ["libs/shared/src"],
-      "@lib/shared/*": ["libs/shared/src/*"]
+      "@shared": ["libs/shared/src"],
+      "@shared/*": ["libs/shared/src/*"]
     }
   }
 }
