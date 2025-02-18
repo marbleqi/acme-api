@@ -44,32 +44,32 @@ export class ReqInterceptor implements NestInterceptor {
       // 请求异常时的处理
       catchError((err: HttpException) => {
         // 记录异常日志
-        void this.reqSrv.update(
-          res.locals.reqId as number,
-          {
-            userId: Number(res.locals.userId),
-            request: Number(res.locals.request),
-            result: err.getResponse(),
-            status: err.getStatus(),
-            endAt: Date.now(),
-          } as ReqEntity,
-        );
+        // void this.reqSrv.update(
+        //   res.locals.reqId as number,
+        //   {
+        //     userId: Number(res.locals.userId),
+        //     request: Number(res.locals.request),
+        //     result: err.getResponse(),
+        //     status: err.getStatus(),
+        //     endAt: Date.now(),
+        //   } as ReqEntity,
+        // );
         // 抛出异常
         throw err;
       }),
       // 请求正常时的处理
       tap(() => {
         // 记录正常日志
-        void this.reqSrv.update(
-          res.locals.reqId as number,
-          {
-            userId: Number(res.locals.userId),
-            request: Object(res.locals.request),
-            result: Object(res.locals.result),
-            status: res.statusCode,
-            endAt: Date.now(),
-          } as ReqEntity,
-        );
+        // void this.reqSrv.update(
+        //   res.locals.reqId as number,
+        //   {
+        //     userId: Number(res.locals.userId),
+        //     request: Object(res.locals.request),
+        //     result: Object(res.locals.result),
+        //     status: res.statusCode,
+        //     endAt: Date.now(),
+        //   } as ReqEntity,
+        // );
       }),
       // 设置响应结果
       map(() => {

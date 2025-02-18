@@ -9,8 +9,16 @@ import { SharedModule, ReqInterceptor } from '@shared';
 import {
   AccountEntity,
   AccountLogEntity,
+  KeyEntity,
+  KeyLogEntity,
+  CertEntity,
+  CertLogEntity,
   AccountService,
+  KeyService,
+  CertService,
   AccountController,
+  KeyController,
+  CertController,
 } from '.';
 
 @Module({
@@ -41,7 +49,7 @@ import {
         console.debug('当前环境', process.env.NODE_ENV);
         /**同步配置，当开发环境和演示环境时，自动同步表结构 */
         const synchronize = process.env.NODE_ENV
-          ? ['dev', 'demo'].includes(process.env.NODE_ENV)
+          ? ['dev', 'test', 'demo'].includes(process.env.NODE_ENV)
           : false;
         return {
           type: 'postgres',
@@ -55,14 +63,23 @@ import {
         } as TypeOrmModuleOptions;
       },
     }),
-    TypeOrmModule.forFeature([AccountEntity, AccountLogEntity]),
+    TypeOrmModule.forFeature([
+      AccountEntity,
+      AccountLogEntity,
+      KeyEntity,
+      KeyLogEntity,
+      CertEntity,
+      CertLogEntity,
+    ]),
     SharedModule,
   ],
   providers: [
     { provide: APP_PIPE, useClass: ValidationPipe },
     { provide: APP_INTERCEPTOR, useClass: ReqInterceptor },
     AccountService,
+    KeyService,
+    CertService,
   ],
-  controllers: [AccountController],
+  controllers: [AccountController, KeyController, CertController],
 })
 export class AppModule {}

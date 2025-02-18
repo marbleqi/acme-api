@@ -15,11 +15,11 @@ import { Response } from 'express';
 
 // 内部依赖
 import { OperatePipe } from '@shared';
-import { AccountDto, AccountService } from '..';
+import { KeyDto, KeyService } from '..';
 
-@Controller('account')
-export class AccountController {
-  constructor(private readonly accountSrv: AccountService) {}
+@Controller('key')
+export class KeyController {
+  constructor(private readonly keySrv: KeyService) {}
   /**
    * 获取对象清单
    * @param operateId 操作序号，用于获取增量数据
@@ -38,7 +38,7 @@ export class AccountController {
     @Res() res: Response,
   ): Promise<void> {
     console.debug('operateId', operateId);
-    res.locals.result = await this.accountSrv.index(operateId);
+    res.locals.result = await this.keySrv.index(operateId);
   }
 
   /**
@@ -58,7 +58,7 @@ export class AccountController {
     @Param('pk') pk: number | string,
     @Res() res: Response,
   ): Promise<void> {
-    res.locals.result = await this.accountSrv.show(pk);
+    res.locals.result = await this.keySrv.show(pk);
   }
 
   /**
@@ -78,7 +78,7 @@ export class AccountController {
     @Param('pk') pk: number | string,
     @Res() res: Response,
   ): Promise<void> {
-    res.locals.result = await this.accountSrv.log(pk);
+    res.locals.result = await this.keySrv.log(pk);
   }
 
   /**
@@ -95,12 +95,12 @@ export class AccountController {
   @ApiOperation({ summary: '创建对象' })
   @ApiBody({ description: '新对象信息' })
   private async create(
-    @Body() config: AccountDto,
+    @Body() config: KeyDto,
     @Res() res: Response,
   ): Promise<void> {
     const userId = Number(res.locals?.userId) || 1;
     const reqId = Number(res.locals?.reqId) || 0;
-    res.locals.result = await this.accountSrv.create(config, userId, reqId);
+    res.locals.result = await this.keySrv.create(config, userId, reqId);
   }
   /**
    * 更新对象（含禁用）
@@ -113,12 +113,12 @@ export class AccountController {
   @ApiBody({ description: '待更新信息' })
   private async update(
     @Param('pk') pk: number | string,
-    @Body() config: AccountDto,
+    @Body() config: KeyDto,
     @Res() res: Response,
   ): Promise<void> {
     const userId = Number(res.locals?.userId) || 1;
     const reqId = Number(res.locals?.reqId) || 0;
-    res.locals.result = await this.accountSrv.update(pk, config, userId, reqId);
+    res.locals.result = await this.keySrv.update(pk, config, userId, reqId);
   }
 
   /**
@@ -131,12 +131,12 @@ export class AccountController {
   @ApiOperation({ summary: '覆盖对象（有则更新，无则创建）' })
   private async upsert(
     @Param('pk') pk: number | string,
-    @Body() config: AccountDto,
+    @Body() config: KeyDto,
     @Res() res: Response,
   ): Promise<void> {
     const userId = Number(res.locals?.userId) || 1;
     const reqId = Number(res.locals?.reqId) || 0;
-    res.locals.result = await this.accountSrv.upsert(pk, config, userId, reqId);
+    res.locals.result = await this.keySrv.upsert(pk, config, userId, reqId);
   }
 
   /**
@@ -154,11 +154,6 @@ export class AccountController {
   ): Promise<void> {
     const userId = Number(res.locals?.userId) || 1;
     const reqId = Number(res.locals?.reqId) || 0;
-    res.locals.result = await this.accountSrv.status(
-      pks,
-      status,
-      userId,
-      reqId,
-    );
+    res.locals.result = await this.keySrv.status(pks, status, userId, reqId);
   }
 }

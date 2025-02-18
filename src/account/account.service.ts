@@ -16,9 +16,6 @@ export class AccountService extends CommonService<
   AccountEntity,
   AccountLogEntity
 > {
-  /**账户缓存Map */
-  public cache: Map<number, AccountEntity>;
-
   /**
    * 构造函数
    * @param accountRepository 账户存储器
